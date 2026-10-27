@@ -1,0 +1,109 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#alsa-lib^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#alsa-lib^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#binutils": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#binutils"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gcc": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gcc"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libglvnd^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libglvnd^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libpulseaudio^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libpulseaudio^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libxkbcommon^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libxkbcommon^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#patchelf": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#patchelf"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#udev^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#udev^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#vulkan-loader^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#vulkan-loader^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland-protocols": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland-protocols"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland^out,dev,bin": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland^out,dev,bin"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXext^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXext^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXi^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXi^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev"
+    }
+  }
+}

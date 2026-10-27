@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "upstream_version": "1.22.2",
+  "sources": {
+    "retroarch": {
+      "url": "https://codeload.github.com/libretro/RetroArch/tar.gz/1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+      "sha256": "5b8137495f12cf26ee3d2f12ade7eefe0517ff6d610da9a420739246be0cc325",
+      "revision": "1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+      "directory": "RetroArch-1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+      "license": "GPL-3.0-or-later"
+    },
+    "sdl": {
+      "url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/refs/tags/release-3.4.0",
+      "sha256": "9614b9696abc4597ffce6b888829dc6537ae500423474c342ac4a67222c5654c",
+      "revision": "release-3.4.0",
+      "directory": "SDL-release-3.4.0",
+      "license": "Zlib"
+    }
+  },
+  "windows_tools": {
+    "w64devkit": {
+      "url": "https://github.com/skeeto/w64devkit/releases/download/v2.4.0/w64devkit-x64-2.4.0.7z.exe",
+      "sha256": "80678c29a56982d7d3b342f12a0060157df5654c38d82d4adc40704070d6aafb",
+      "file": "w64devkit-2.4.0.exe"
+    },
+    "cmake": {
+      "url": "https://github.com/Kitware/CMake/releases/download/v3.31.7/cmake-3.31.7-windows-x86_64.zip",
+      "sha256": "ab1c7f46a1b1314f9fcb766c2573148679af599d94c5566bc12b8b35bb563362",
+      "file": "cmake-3.31.7.zip"
+    },
+    "python": {
+      "url": "https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip",
+      "sha256": "009d6bf7e3b2ddca3d784fa09f90fe54336d5b60f0e0f305c37f400bf83cfd3b",
+      "file": "python-3.11.9-embed-amd64.zip"
+    }
+  },
+  "targets": {
+    "macos-arm64": {
+      "os": "macos",
+      "arch": "arm64",
+      "runner": "macos-26",
+      "minimum_os": "13.0"
+    },
+    "macos-x64": {
+      "os": "macos",
+      "arch": "x86_64",
+      "runner": "macos-15-intel",
+      "minimum_os": "13.0"
+    },
+    "linux-x64": {
+      "os": "linux",
+      "arch": "x86_64",
+      "runner": "ubuntu-24.04",
+      "minimum_glibc": "2.39"
+    },
+    "linux-arm64": {
+      "os": "linux",
+      "arch": "aarch64",
+      "runner": "ubuntu-24.04-arm",
+      "minimum_glibc": "2.39"
+    },
+    "windows-x64": {
+      "os": "windows",
+      "arch": "x86_64",
+      "runner": "windows-2025",
+      "minimum_os": "10"
+    }
+  }
+}

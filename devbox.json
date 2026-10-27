@@ -1,0 +1,133 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.18.4/.schema/devbox.schema.json",
+  "packages": {
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {},
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libglvnd^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#vulkan-loader^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libxkbcommon^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#alsa-lib^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libpulseaudio^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#udev^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXext^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXi^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gcc": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#binutils": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#patchelf": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland-protocols": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland^out,dev,bin": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {}
+  },
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "shell": {
+    "scripts": {
+      "check": "python3 tool/ci.py check",
+      "build": "python3 tool/ci.py build",
+      "package": "python3 tool/ci.py package"
+    }
+  },
+  "nixpkgs": {
+    "commit": "b134951a4c9f3c995fd7be05f3243f8ecd65d798"
+  }
+}

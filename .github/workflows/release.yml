@@ -1,0 +1,177 @@
+name: Broomm RetroArch desktop releases
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish a complete release (main/develop only)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Serialize version selection through publication. PRs never publish.
+concurrency:
+  group: broomm-retroarch-${{ github.event_name == 'pull_request' && github.run_id || 'publish' }}
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.plan.outputs.version }}
+      publish: ${{ steps.plan.outputs.publish }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@734088efddca47cf44ff8a09289c6d0e51b73218 # v0.12.0
+        with:
+          devbox-version: '0.18.4'
+          disable-nix-access-token: 'true'
+      - id: plan
+        env:
+          REQUEST_PUBLISH: ${{ inputs.publish }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash tool/run.sh plan
+
+  workflow-lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@734088efddca47cf44ff8a09289c6d0e51b73218 # v0.12.0
+        with:
+          project-path: ci/lint
+          devbox-version: '0.18.4'
+          disable-nix-access-token: 'true'
+      - run: devbox --config ci/lint run check
+
+  build:
+    needs: version
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: macos-arm64
+            os: macos-26
+          - target: macos-x64
+            os: macos-15-intel
+          - target: linux-x64
+            os: ubuntu-24.04
+          - target: linux-arm64
+            os: ubuntu-24.04-arm
+          - target: windows-x64
+            os: windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    env:
+      RELEASE_VERSION: ${{ needs.version.outputs.version }}
+      BUILD_TARGET: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@734088efddca47cf44ff8a09289c6d0e51b73218 # v0.12.0
+        if: runner.os != 'Windows'
+        with:
+          devbox-version: '0.18.4'
+          disable-nix-access-token: 'true'
+      # Devbox has no Windows backend. Every additional tool stays in the
+      # workspace, is pinned/checksummed, and requires no system installation.
+      - name: Bootstrap private Python on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./tool/windows.ps1
+      - name: Prepare private Windows compiler and CMake
+        if: runner.os == 'Windows'
+        run: bash tool/run.sh windows-tools
+      - name: Test packaging and release boundaries
+        run: bash tool/run.sh check
+      - name: Build pinned SDL3 and RetroArch
+        run: bash tool/run.sh build --target "$BUILD_TARGET" --version "$RELEASE_VERSION"
+      - name: Native SDL3 identity and input probe
+        if: ${{ !cancelled() }}
+        run: bash tool/run.sh test-sdl --target "$BUILD_TARGET"
+      - name: Native frontend and pause/quit probe
+        if: ${{ !cancelled() }}
+        run: bash tool/run.sh test-frontend --target "$BUILD_TARGET"
+      - name: Package checked runtime and licenses
+        run: bash tool/run.sh package --target "$BUILD_TARGET"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: retroarch-build-${{ matrix.target }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: retroarch-logs-${{ matrix.target }}
+          path: .tool-cache/logs/
+          if-no-files-found: warn
+          retention-days: 14
+
+  sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@734088efddca47cf44ff8a09289c6d0e51b73218 # v0.12.0
+        with:
+          devbox-version: '0.18.4'
+          disable-nix-access-token: 'true'
+      - name: Preserve exact corresponding sources and recipes
+        run: bash tool/run.sh sources
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: retroarch-sources
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    needs: [version, workflow-lint, build, sources]
+    if: needs.version.outputs.publish == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@734088efddca47cf44ff8a09289c6d0e51b73218 # v0.12.0
+        with:
+          devbox-version: '0.18.4'
+          disable-nix-access-token: 'true'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: retroarch-build-*
+          merge-multiple: true
+          path: dist
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: retroarch-sources
+          path: dist
+      - name: Verify complete release and publish atomically through a draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ needs.version.outputs.version }}
+        run: bash tool/run.sh publish --version "$RELEASE_VERSION"
