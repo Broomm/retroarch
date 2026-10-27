@@ -73,13 +73,19 @@
         "aarch64-linux"
       ]
     },
-    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev": {
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out": {
       "platforms": [
         "x86_64-linux",
         "aarch64-linux"
       ]
     },
     "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev": {
+      "platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXtst^out": {
       "platforms": [
         "x86_64-linux",
         "aarch64-linux"

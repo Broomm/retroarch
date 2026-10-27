@@ -1,0 +1,424 @@
+{
+  "artifacts": {
+    "linux-arm64": {
+      "logs": {
+        "bytes": 16270,
+        "sha256": "205b09947986134bba43de15e192b5fa4f66205ae4188bc5110d1e1e7dcd9c77"
+      },
+      "runtime": {
+        "bytes": 10086535,
+        "sha256": "4302629fd0434f681b26050d1218307e8aa6f9a319f842636f796d5f42a5afe9"
+      }
+    },
+    "linux-x64": {
+      "logs": {
+        "bytes": 16565,
+        "sha256": "46112abaa65515f1dca34f0d0e8405455ee12056b135ae10c72c31adeb096d4d"
+      },
+      "runtime": {
+        "bytes": 10330801,
+        "sha256": "743e2b5defd7f7cc1ed14b16e9847905f7c634a43400fde1221b50484aea5884"
+      }
+    },
+    "macos-arm64": {
+      "logs": {
+        "bytes": 86966,
+        "sha256": "678a011871882008ab3c9cbccf630d4e7c020b522160dc2da7ffdf4e576117f3"
+      },
+      "runtime": {
+        "bytes": 8384556,
+        "sha256": "5392c9dc36ac4227e0e7afea408983e586c3fb7b7a6e392f5015875e274cc1ba"
+      }
+    }
+  },
+  "base_commit": "24cfe6ecba83d6d1955bd6ee2acc9853a554620c",
+  "changes": {
+    "linux": "Disable standalone RetroArch PulseAudio driver; retain ALSA and dynamic SDL3 PulseAudio; audit loader before startup",
+    "native_probe": "Add SDL3 dummy audio stream while retaining virtual controller checks",
+    "transport": "Explicit loopback client binding before server port selection; peer/command validation and bounded complete reply trace; owned-child UDP inventory",
+    "workflow": "Compilation/native probes remain independent after an executed regression failure; publication still blocked on any failure"
+  },
+  "checks": {
+    "all_six_artifacts_match_supplied_digests": true,
+    "exact_hosted_macos_original_probe_passes_locally": true,
+    "exact_hosted_macos_updated_audio_controller_frontend_probes_pass_locally": true,
+    "local_native_audio_controller": true,
+    "local_native_frontend_play_pause_quit": true,
+    "native_owned_child_udp_inventory_stack_and_trace": true,
+    "regressions": 31,
+    "workflow_shell_lint": true
+  },
+  "date": "2026-10-27",
+  "failed_macos_host": "macOS 26.6.2 / Apple M1 Virtual",
+  "host": "macOS 27.0.1 / Apple M1 Pro arm64",
+  "hosted_binary_local_control_protocol": [
+    {
+      "attempts": 3,
+      "client": [
+        "127.0.0.1",
+        59536
+      ],
+      "command": "GET_STATUS",
+      "expected": "PLAYING",
+      "replies": [
+        {
+          "peer": [
+            "127.0.0.1",
+            64864
+          ],
+          "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+        }
+      ],
+      "reply": "GET_STATUS PLAYING Broomm CI,probe",
+      "server": [
+        "127.0.0.1",
+        64864
+      ]
+    },
+    {
+      "attempts": 2,
+      "client": [
+        "127.0.0.1",
+        59536
+      ],
+      "command": "GET_STATUS",
+      "expected": "PAUSED",
+      "replies": [
+        {
+          "peer": [
+            "127.0.0.1",
+            64864
+          ],
+          "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+        },
+        {
+          "peer": [
+            "127.0.0.1",
+            64864
+          ],
+          "reply": "GET_STATUS PAUSED Broomm CI,probe\n"
+        }
+      ],
+      "reply": "GET_STATUS PAUSED Broomm CI,probe",
+      "server": [
+        "127.0.0.1",
+        64864
+      ]
+    }
+  ],
+  "hosted_toolchains": {
+    "linux-arm64": {
+      "compiler": "gcc (GCC) 13.2.0",
+      "configure": [
+        "--enable-sdl3",
+        "--disable-sdl2",
+        "--disable-sdl",
+        "--enable-opengl_core",
+        "--enable-slang",
+        "--enable-networking",
+        "--enable-command",
+        "--disable-qt",
+        "--disable-ffmpeg",
+        "--disable-mcp"
+      ],
+      "recipe_sha": "24cfe6ecba83d6d1955bd6ee2acc9853a554620c",
+      "sources": {
+        "retroarch": {
+          "directory": "RetroArch-1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "license": "GPL-3.0-or-later",
+          "revision": "1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "sha256": "5b8137495f12cf26ee3d2f12ade7eefe0517ff6d610da9a420739246be0cc325",
+          "url": "https://codeload.github.com/libretro/RetroArch/tar.gz/1b8917df23625bcf40b67ba6476d9bfb0d30dc65"
+        },
+        "sdl": {
+          "directory": "SDL-release-3.4.0",
+          "license": "Zlib",
+          "revision": "release-3.4.0",
+          "sha256": "9614b9696abc4597ffce6b888829dc6537ae500423474c342ac4a67222c5654c",
+          "url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/refs/tags/release-3.4.0"
+        }
+      },
+      "toolchain": {
+        "cmake": "cmake version 3.29.2",
+        "make": "GNU Make 4.4.1",
+        "pkg-config": "0.29.2"
+      }
+    },
+    "linux-x64": {
+      "compiler": "gcc (GCC) 13.2.0",
+      "configure": [
+        "--enable-sdl3",
+        "--disable-sdl2",
+        "--disable-sdl",
+        "--enable-opengl_core",
+        "--enable-slang",
+        "--enable-networking",
+        "--enable-command",
+        "--disable-qt",
+        "--disable-ffmpeg",
+        "--disable-mcp"
+      ],
+      "recipe_sha": "24cfe6ecba83d6d1955bd6ee2acc9853a554620c",
+      "sources": {
+        "retroarch": {
+          "directory": "RetroArch-1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "license": "GPL-3.0-or-later",
+          "revision": "1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "sha256": "5b8137495f12cf26ee3d2f12ade7eefe0517ff6d610da9a420739246be0cc325",
+          "url": "https://codeload.github.com/libretro/RetroArch/tar.gz/1b8917df23625bcf40b67ba6476d9bfb0d30dc65"
+        },
+        "sdl": {
+          "directory": "SDL-release-3.4.0",
+          "license": "Zlib",
+          "revision": "release-3.4.0",
+          "sha256": "9614b9696abc4597ffce6b888829dc6537ae500423474c342ac4a67222c5654c",
+          "url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/refs/tags/release-3.4.0"
+        }
+      },
+      "toolchain": {
+        "cmake": "cmake version 3.29.2",
+        "make": "GNU Make 4.4.1",
+        "pkg-config": "0.29.2"
+      }
+    },
+    "macos-arm64": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "configure": [
+        "--enable-sdl3",
+        "--disable-sdl2",
+        "--disable-sdl",
+        "--enable-opengl_core",
+        "--enable-slang",
+        "--enable-networking",
+        "--enable-command",
+        "--disable-qt",
+        "--disable-ffmpeg",
+        "--disable-mcp",
+        "--disable-metal"
+      ],
+      "recipe_sha": "24cfe6ecba83d6d1955bd6ee2acc9853a554620c",
+      "sources": {
+        "retroarch": {
+          "directory": "RetroArch-1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "license": "GPL-3.0-or-later",
+          "revision": "1b8917df23625bcf40b67ba6476d9bfb0d30dc65",
+          "sha256": "5b8137495f12cf26ee3d2f12ade7eefe0517ff6d610da9a420739246be0cc325",
+          "url": "https://codeload.github.com/libretro/RetroArch/tar.gz/1b8917df23625bcf40b67ba6476d9bfb0d30dc65"
+        },
+        "sdl": {
+          "directory": "SDL-release-3.4.0",
+          "license": "Zlib",
+          "revision": "release-3.4.0",
+          "sha256": "9614b9696abc4597ffce6b888829dc6537ae500423474c342ac4a67222c5654c",
+          "url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/refs/tags/release-3.4.0"
+        }
+      },
+      "toolchain": {
+        "cmake": "cmake version 3.29.2",
+        "make": "GNU Make 4.4.1",
+        "pkg-config": "0.29.2"
+      }
+    }
+  },
+  "input_logs": {
+    "linux-arm64": "fb5f4b578d49b771dc78f561ada2ac607cfb942a185db7dc04e5ff6efaad8bc6",
+    "linux-x64": "4bcba29bbda2086fb95fbac5dd3d339e4716d5bfede49fb4c28efe814986e483",
+    "macos-arm64": "42a02db308f8897af2a92cdf08dd79948159e6973916470fa5e9ac9ef47be3ac"
+  },
+  "limits": [
+    "Hosted macOS UDP timeout cause and hosted result after explicit binding remain unconfirmed",
+    "No rebuilt native Linux execution or physical Linux audio test on this host",
+    "No native Windows execution",
+    "No new emulator binary, Flutter rebuild, OS package installation, project commit, push, tag or release"
+  ],
+  "linux_elf_before_fix": {
+    "linux-arm64": {
+      "bundle/RetroArch/lib/libSDL3.so.0": {
+        "contains_pulse_dynamic_soname": true,
+        "dynamic_strings": {
+          "1": [
+            "libm.so.6",
+            "libpthread.so.0",
+            "libc.so.6",
+            "ld-linux-aarch64.so.1"
+          ],
+          "14": [
+            "libSDL3.so.0"
+          ],
+          "29": [
+            "$ORIGIN"
+          ]
+        },
+        "machine": 183,
+        "sha256": "826b175b09244a48e97c747ffd23bdbf09768bff7dd49aebf2d7aa5613cfbb9e"
+      },
+      "bundle/RetroArch/retroarch": {
+        "contains_pulse_dynamic_soname": true,
+        "dynamic_strings": {
+          "1": [
+            "librt.so.1",
+            "libasound.so.2",
+            "libpulse.so.0",
+            "libpthread.so.0",
+            "libwayland-egl.so.1",
+            "libwayland-client.so.0",
+            "libwayland-cursor.so.0",
+            "libX11.so.6",
+            "libXext.so.6",
+            "libXrandr.so.2",
+            "libX11-xcb.so.1",
+            "libxcb.so.1",
+            "libXi.so.6",
+            "libXss.so.1",
+            "libxkbcommon.so.0",
+            "libudev.so.1",
+            "libGL.so.1",
+            "libEGL.so.1",
+            "libSDL3.so.0",
+            "libdl.so.2",
+            "libm.so.6",
+            "libc.so.6",
+            "ld-linux-aarch64.so.1"
+          ],
+          "29": [
+            "$ORIGIN/lib"
+          ]
+        },
+        "machine": 183,
+        "sha256": "486b108352df229694e87f7747951da0b3eae1b291f867c899c307835631353e"
+      }
+    },
+    "linux-x64": {
+      "bundle/RetroArch/lib/libSDL3.so.0": {
+        "contains_pulse_dynamic_soname": true,
+        "dynamic_strings": {
+          "1": [
+            "libm.so.6",
+            "libpthread.so.0",
+            "libc.so.6"
+          ],
+          "14": [
+            "libSDL3.so.0"
+          ],
+          "29": [
+            "$ORIGIN"
+          ]
+        },
+        "machine": 62,
+        "sha256": "cd1e2e0c2b789ef0190311b4f3af73961947bc2a919c62037a9156a356448c0d"
+      },
+      "bundle/RetroArch/retroarch": {
+        "contains_pulse_dynamic_soname": true,
+        "dynamic_strings": {
+          "1": [
+            "librt.so.1",
+            "libasound.so.2",
+            "libpulse.so.0",
+            "libpthread.so.0",
+            "libwayland-egl.so.1",
+            "libwayland-client.so.0",
+            "libwayland-cursor.so.0",
+            "libX11.so.6",
+            "libXext.so.6",
+            "libXrandr.so.2",
+            "libX11-xcb.so.1",
+            "libxcb.so.1",
+            "libXi.so.6",
+            "libXss.so.1",
+            "libxkbcommon.so.0",
+            "libudev.so.1",
+            "libGL.so.1",
+            "libEGL.so.1",
+            "libSDL3.so.0",
+            "libdl.so.2",
+            "libm.so.6",
+            "libc.so.6",
+            "ld-linux-x86-64.so.2"
+          ],
+          "29": [
+            "$ORIGIN/lib"
+          ]
+        },
+        "machine": 62,
+        "sha256": "488967ffe6a6e1cd5cfffb7e011855b12678fa8571ffe8040efb9e443056de9e"
+      }
+    }
+  },
+  "local_control_protocol": [
+    {
+      "attempts": 4,
+      "client": [
+        "127.0.0.1",
+        60508
+      ],
+      "command": "GET_STATUS",
+      "expected": "PLAYING",
+      "replies": [
+        {
+          "peer": [
+            "127.0.0.1",
+            51183
+          ],
+          "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+        }
+      ],
+      "reply": "GET_STATUS PLAYING Broomm CI,probe",
+      "server": [
+        "127.0.0.1",
+        51183
+      ]
+    },
+    {
+      "attempts": 1,
+      "client": [
+        "127.0.0.1",
+        60508
+      ],
+      "command": "GET_STATUS",
+      "expected": "PAUSED",
+      "replies": [
+        {
+          "peer": [
+            "127.0.0.1",
+            51183
+          ],
+          "reply": "GET_STATUS PAUSED Broomm CI,probe\n"
+        }
+      ],
+      "reply": "GET_STATUS PAUSED Broomm CI,probe",
+      "server": [
+        "127.0.0.1",
+        51183
+      ]
+    }
+  ],
+  "logs": [
+    ".tool-cache/ci-followup-4-*",
+    ".tool-cache/logs/macos-arm64/",
+    ".tool-cache/logs/udp-diagnostics-*/",
+    "../broomm/.tool-cache/retroarch-release/followup-4/"
+  ],
+  "references": [
+    "https://wiki.libsdl.org/SDL3/README-linux",
+    "https://wiki.libsdl.org/SDL3/SDL_HINT_AUDIO_DRIVER"
+  ],
+  "run": "https://github.com/Broomm/retroarch/actions/runs/40571405429",
+  "source_files": {
+    ".github/workflows/release.yml": "5f0a1d18fb0527fd9afd14435b13ca0ffd6522577d137ab2aef7c9ccba70f875",
+    "IMPLEMENTATION.md": "f11ddf6b44b9d58e778049d98ab0ef14261e869dcb97a767e6166f8d3faf9a45",
+    "README.md": "745fa9f5bcba4d72222e189fa0a9dba585a0765a2c4723eded1c7f4f5e6a79bd",
+    "tests/sdl_probe.c": "bd00c81d2199dd78f85a5320b49cf90d9712b053c98e9ad0a464f226cbba1321",
+    "tests/test_ci.py": "2dc6709665eb8fcc7d8e020e2ca13e5a35153ed4ef3c65330e581ffd07ef3c9b",
+    "tool/ci.py": "d65dbde77a8d989e4524c82c5204823730f8bd36d7953307f302dfbcff56f696"
+  },
+  "unchanged_packages": {
+    "broomm_macos": {
+      "bytes": 20429530,
+      "sha256": "10d1be1312a16fc083532811bf64d71f38e245e38c5d339ddaf72d8993763fbb"
+    },
+    "retroarch_macos_arm64": {
+      "bytes": 8119704,
+      "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+    }
+  }
+}

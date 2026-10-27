@@ -1,0 +1,766 @@
+{
+  "base_commit": "0411d59b8ef956752cbcd98f49e10202ec997235",
+  "cause": {
+    "available": [
+      "out"
+    ],
+    "package": "xorg.libXScrnSaver",
+    "requested_after": [
+      "out"
+    ],
+    "requested_before": [
+      "out",
+      "dev"
+    ],
+    "stage": "Devbox installation"
+  },
+  "checks": {
+    "all_unix_selectors_pass": true,
+    "original_configuration_rejected_on_both_linux_architectures": true,
+    "recipe_archive_matches_current_head": true,
+    "regressions": 17,
+    "source_archives_exact_readback": true,
+    "version_plan": {
+      "publish": false,
+      "version": "0.1.0"
+    },
+    "workflow_shell_lint": true
+  },
+  "date": "2026-10-27",
+  "failed_jobs": [
+    "version",
+    "sources"
+  ],
+  "files": {
+    ".github/workflows/release.yml": "4d11f9cf8380cf9763ed946876e9cddc782420654f998ee68f99f18e2559bbf0",
+    "devbox.json": "db81d6105be647c25d365535455c85e2bbf9e8b9e08d23fe21ec599a50071cf3",
+    "devbox.lock": "a05085159b05de936be8882d1c9bb017d05d68774abd3d7a830f713a3d3545c5",
+    "tool/check_sdk.nix": "8a1531ae5d2f8b8a8b26df7cc51b35d99950f6e77232f846de01596bfe771f84"
+  },
+  "host": "macOS 27.0.1 / arm64",
+  "input_logs": {
+    "65d221c4-fbd5-4739-934d-ccfcedd7197c": "e5cd53b0716aae4d0e8e8a2c564c9431d400142995f903cf1bd8f226a2b10ddd",
+    "f21bf960-d24d-452a-a03f-4142cd12ca77": "33468b754e72bc84754bb52e48556648dd8da8d4dcb31c5ebc5bd6aaa5f00943"
+  },
+  "limits": [
+    "No native Linux SDK installation or execution on this macOS host",
+    "No new hosted run yet",
+    "Recipe readback tested committed HEAD, not uncommitted changes",
+    "No frontend/runtime source or binary change"
+  ],
+  "macos_archive": {
+    "bytes": 8119704,
+    "file": "RetroArch-1.22.2-broomm-0.1.0-local-macos-arm64.zip",
+    "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+  },
+  "resolved_derivations": {
+    "18qsr8hlnl8jws9r35ad9nyqwqk7yl9l-libXScrnSaver-1.2.4.drv": {
+      "outputs": [
+        "out"
+      ],
+      "system": "x86_64-linux"
+    },
+    "f13yxb72k5ishgdgzcn2z8nk0b12ss6m-libXScrnSaver-1.2.4.drv": {
+      "outputs": [
+        "out"
+      ],
+      "system": "aarch64-linux"
+    }
+  },
+  "sdk_audit": {
+    "aarch64-darwin": {
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {
+        "available": [
+          "out",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {
+        "available": [
+          "out",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      }
+    },
+    "aarch64-linux": {
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#alsa-lib^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#binutils": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {
+        "available": [
+          "out",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gcc": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {
+        "available": [
+          "out",
+          "doc",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {
+        "available": [
+          "out",
+          "man",
+          "info",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libglvnd^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libpulseaudio^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libxkbcommon^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#patchelf": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {
+        "available": [
+          "out",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {
+        "available": [
+          "out",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#udev^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#vulkan-loader^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland-protocols": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland^out,dev,bin": {
+        "available": [
+          "out",
+          "bin",
+          "dev",
+          "doc",
+          "man",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev",
+          "bin"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXext^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXi^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      }
+    },
+    "x86_64-darwin": {
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {
+        "available": [
+          "out",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {
+        "available": [
+          "out",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      }
+    },
+    "x86_64-linux": {
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#alsa-lib^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#binutils": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#cmake": {
+        "available": [
+          "out",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gcc": {
+        "available": [
+          "out",
+          "man",
+          "info"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gh": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#git": {
+        "available": [
+          "out",
+          "doc",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#gnumake": {
+        "available": [
+          "out",
+          "man",
+          "info",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libglvnd^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libpulseaudio^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#libxkbcommon^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#ninja": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#patchelf": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#pkg-config": {
+        "available": [
+          "out",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#python3": {
+        "available": [
+          "out",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#udev^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#vulkan-loader^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland-protocols": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#wayland^out,dev,bin": {
+        "available": [
+          "out",
+          "bin",
+          "dev",
+          "doc",
+          "man",
+          "debug"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev",
+          "bin"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out": {
+        "available": [
+          "out"
+        ],
+        "missing": [],
+        "requested": [
+          "out"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXext^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXfixes^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXi^out,dev": {
+        "available": [
+          "out",
+          "dev",
+          "man",
+          "doc"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      },
+      "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev": {
+        "available": [
+          "out",
+          "dev"
+        ],
+        "missing": [],
+        "requested": [
+          "out",
+          "dev"
+        ]
+      }
+    }
+  }
+}

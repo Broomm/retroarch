@@ -1,0 +1,273 @@
+{
+  "base_commit": "c118770fe80286964fcc42d32977130e67e09eb9",
+  "causes": {
+    "macos_x64": "Locked Devbox SDK bootstrap fails on cache.nixos.org DNS/connection timeouts before compilation; no compiler recipe change required",
+    "windows": "First UDP query raises Winsock 10054 after successful native compilation/SDL/PE/feature checks; still-live emulator has not opened the port"
+  },
+  "checks": {
+    "diff": "git diff --check: passed",
+    "host": {
+      "machine": "arm64",
+      "python": "3.11.10",
+      "system": "Darwin",
+      "version": "27.0.1"
+    },
+    "lint": "devbox --config ci/lint run check: actionlint and ShellCheck passed",
+    "logs": {
+      "ci-followup-6-check.log": "d859d170b8329ef9aa29a02660815e35fa095c82f6ded7841418a1d4c0e22f90",
+      "ci-followup-6-frontend.log": "7d6b522b5942af657a6ef7cc2f921b7d95e167251672a1e8cb3070c630fb06ce",
+      "ci-followup-6-lint.log": "2de64efdf819e22c4ca03634bf797762b4e1cda421489c0340bd4fa92bc785c3"
+    },
+    "native_frontend": {
+      "binary_sha256": "fc66d124bc8a3933d5ebf112a0f9bf4b9794f91602dacdfb970189b1483343ca",
+      "cases": [
+        "relocated runtime dependencies",
+        "SDL3 feature readback",
+        "original synthetic core/content",
+        "UDP playing/pause acknowledgment",
+        "normal QUIT",
+        "explicit private writable paths"
+      ],
+      "passed": true
+    },
+    "native_protocol": [
+      {
+        "attempts": 6,
+        "client": [
+          "127.0.0.1",
+          62151
+        ],
+        "command": "GET_STATUS",
+        "expected": "PLAYING",
+        "port_unreachable": 0,
+        "replies": [
+          {
+            "peer": [
+              "127.0.0.1",
+              57226
+            ],
+            "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+          }
+        ],
+        "reply": "GET_STATUS PLAYING Broomm CI,probe",
+        "server": [
+          "127.0.0.1",
+          57226
+        ]
+      },
+      {
+        "attempts": 2,
+        "client": [
+          "127.0.0.1",
+          62151
+        ],
+        "command": "GET_STATUS",
+        "expected": "PAUSED",
+        "port_unreachable": 0,
+        "replies": [
+          {
+            "peer": [
+              "127.0.0.1",
+              57226
+            ],
+            "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+          },
+          {
+            "peer": [
+              "127.0.0.1",
+              57226
+            ],
+            "reply": "GET_STATUS PAUSED Broomm CI,probe\n"
+          }
+        ],
+        "reply": "GET_STATUS PAUSED Broomm CI,probe",
+        "server": [
+          "127.0.0.1",
+          57226
+        ]
+      }
+    ],
+    "regressions": "bash tool/run.sh check: 41 passed",
+    "source_hashes": {
+      "IMPLEMENTATION.md": "7e09aaffe5502a2e0660d65bd30386e5a3257960be6431137f05f169bbe8bec1",
+      "README.md": "20e2dde1e60aade2c2dfe2ebb755d68856725fa3d2c65c073f1dbe98f340e248",
+      "tests/test_ci.py": "52c7c7a6f1fa6ffaee1e42b0703d14b3265295194c18fe55c948b7a402a9bdba",
+      "tool/ci.py": "5a4ce9819181bf79ea396d9d33bda5f0b5e4d872cb036ed474463aa91988f496"
+    }
+  },
+  "correction": "Continue bounded query wait only for Windows 10054 on UDP send/receive, count events and pace at 250 ms; retain 20-second deadline, source/state validation and live-child checks",
+  "date": "2026-10-27",
+  "hosted_jobs_at_base": [
+    {
+      "conclusion": "success",
+      "name": "workflow-lint",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "sources",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "version",
+      "native_steps": []
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (windows-x64, windows-2025)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "failure",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (macos-arm64, macos-26)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (macos-x64, macos-15-intel)",
+      "native_steps": [
+        {
+          "conclusion": "skipped",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (linux-x64, ubuntu-24.04)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (linux-arm64, ubuntu-24.04-arm)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "skipped",
+      "name": "publish",
+      "native_steps": []
+    }
+  ],
+  "input_logs": {
+    "macos-x64": {
+      "bytes": 63438,
+      "sha256": "3b7617eb3e02a99305be4973b119b33f39a1a5afab903727d7efae25736911fb"
+    },
+    "windows-x64": {
+      "bytes": 34024,
+      "sha256": "23714fc35414c69508de3e34941f68b4b823c4b121af14548d41cec7fc18d887"
+    }
+  },
+  "limits": [
+    "Corrected native Windows frontend acceptance needs a hosted rerun",
+    "Intel SDK acquisition needs a hosted rerun after package-cache network recovery; recipe unchanged",
+    "No native Windows execution on this macOS development host",
+    "Headless probes do not verify rendered graphics, physical audio/controllers, injection, Steam or gameplay",
+    "No failed native-check retries, timeouts enlarged, skipped checks, SDK cache deletion, new dependency, OS setting change, Flutter change, new upstream binary or Git publication"
+  ],
+  "references": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recvfrom"
+  ],
+  "run": "https://github.com/Broomm/retroarch/actions/runs/40579927392",
+  "unchanged_packages": {
+    "broomm_macos": {
+      "bytes": 20429530,
+      "file": "Broomm-macOS-session-recovery.zip",
+      "sha256": "10d1be1312a16fc083532811bf64d71f38e245e38c5d339ddaf72d8993763fbb"
+    },
+    "retroarch_macos_arm64": {
+      "bytes": 8119704,
+      "file": "RetroArch-1.22.2-broomm-0.1.0-local-macos-arm64.zip",
+      "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+    }
+  },
+  "windows_failure_artifact": {
+    "bytes": 1123673,
+    "id": 12768634831,
+    "readback": {
+      "control-protocol.json": [
+        {
+          "attempts": 1,
+          "client": [
+            "127.0.0.1",
+            53769
+          ],
+          "command": "GET_STATUS",
+          "expected": "PLAYING",
+          "replies": [],
+          "server": [
+            "127.0.0.1",
+            53770
+          ]
+        }
+      ],
+      "failed-process.json": {
+        "pid": 5032,
+        "returncode": null,
+        "target": "windows-x64"
+      }
+    },
+    "sha256": "01f45470452199ad62b9d89d680ff347b8b7094f2705ccf28f068d0836fef566"
+  }
+}

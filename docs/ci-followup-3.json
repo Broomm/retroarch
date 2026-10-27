@@ -1,0 +1,24 @@
+{
+  "base_commit": "24cfe6ecba83d6d1955bd6ee2acc9853a554620c",
+  "cause": "WinError 206 in the large-diagnostic regression fixture, before emulator compilation; inline payload exceeded CreateProcessW command-line limit",
+  "checks": {
+    "changed_test_sha256": "f7e467472896f3e29f947bfcbc8cd016b1f688132ce81a5482333822f8389e66",
+    "existing_diagnostic_assertions_preserved": true,
+    "regressions_passed": 25,
+    "windows_command_line_guard_enabled_on_all_hosts": true
+  },
+  "date": "2026-10-27",
+  "fixture_bytes": 40054,
+  "limit_reference": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw",
+  "limits": [
+    "Checks executed on macOS; Windows native rerun still required",
+    "No emulator/app source, build flags, dependency, workflow, timeout, skip, commit, push or publication change",
+    "Hosted macOS ARM64 timeout remains separate and unresolved"
+  ],
+  "supplied_log_sha256": "684d130bd143bab4f8f74cafdf0b423f62a9f77ff78f5bf4450a68d457a4b776",
+  "windows_command_line_units_including_nul": {
+    "limit": 32767,
+    "new_with_representative_windows_paths": 226,
+    "old": 45168
+  }
+}

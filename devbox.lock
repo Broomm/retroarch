@@ -81,9 +81,9 @@
       "last_modified": "1970-01-01T00:00:00Z",
       "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libX11^out,dev"
     },
-    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev": {
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out": {
       "last_modified": "1970-01-01T00:00:00Z",
-      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out,dev"
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXScrnSaver^out"
     },
     "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXcursor^out,dev": {
       "last_modified": "1970-01-01T00:00:00Z",
@@ -104,6 +104,10 @@
     "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev": {
       "last_modified": "1970-01-01T00:00:00Z",
       "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXrandr^out,dev"
+    },
+    "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXtst^out": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/b134951a4c9f3c995fd7be05f3243f8ecd65d798#xorg.libXtst^out"
     }
   }
 }

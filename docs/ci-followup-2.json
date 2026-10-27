@@ -1,0 +1,110 @@
+{
+  "base_commit": "c9c8e49ada1640f6e639132a9b91f3144c96ed64",
+  "causes": {
+    "linux": "SDL CMake requires XTEST; missing xorg.libXtst SDK dependency",
+    "macos_arm64": "Strict frontend GET_STATUS timeout; hosted cause unconfirmed; stdout log empty",
+    "windows": "GITHUB_PATH exported BusyBox bash.exe ahead of runner Git Bash; rejected --noprofile"
+  },
+  "checks": {
+    "linux_arm64_xtest_header_elf_soname": true,
+    "linux_x64_xtest_header_elf_soname": true,
+    "native_frontend_play_pause_quit_with_flushed_log": true,
+    "native_owned_child_stack_sampling": true,
+    "native_sdl_input": true,
+    "regressions": 25,
+    "sdk_selectors": {
+      "aarch64-darwin": 7,
+      "aarch64-linux": 26,
+      "x86_64-darwin": 7,
+      "x86_64-linux": 26
+    },
+    "workflow_shell_lint": true
+  },
+  "date": "2026-10-27",
+  "files": {
+    ".github/workflows/release.yml": "c69b113cee92c29bc2964a9eb41bf2c829ced92d8818f52e979b184fc3a9467d",
+    "IMPLEMENTATION.md": "cd185311c34dfe8c4526f5830a6b8ec5bbee41cf464ac7ce37f5283cea5567f7",
+    "README.md": "8fc760a38489aa5c4e990af8cdaf7e15ef5e375e670a4510104b687b1f52b785",
+    "devbox.json": "dcc8009a311183b8971940eaf4c79631bc24df61e273216ebf89ba90499aab31",
+    "devbox.lock": "7c78c50b3727bb8a4ecbc02246bec045504521f8bda59768d7df61709450bd7d",
+    "tests/test_ci.py": "507c8db04e76129c244bc496fbbde7701478dfdfe83425fade88eb22c12cc432",
+    "tool/ci.py": "8d0992b320fb1f4c64a35cd65ed38412ee52020f719d43a6e3ae5638a942c9ee"
+  },
+  "host": "macOS 27.0.1 / Apple M1 Pro arm64",
+  "hosted_artifacts": {
+    "linux-arm64": {
+      "files": {
+        "linux-arm64/sdl-configure.log": "53f5a30551338fbf63811734c89bb442e39f52fcd6654098987b17a3e37097dc"
+      },
+      "zip_sha256": "827a1ea8227263a32017db77ab50cf0e786e9997983ba8aebde5da2779df9b26"
+    },
+    "linux-x64": {
+      "files": {
+        "linux-x64/sdl-configure.log": "345cce59063ab8c73f9a6ebeb9163ecf89e645645cbffcaead699a7096099e4d"
+      },
+      "zip_sha256": "3a3ea0a714e4e0374f7533a816d552392beb8ad7442a58d9687c59b99b48a134"
+    },
+    "macos-arm64": {
+      "files": {
+        "macos-arm64/control-core-build.log": "89b721f5f435754d9c5907f8ee3ca16cacd4752f6d1db73c1b52ec068033bd7a",
+        "macos-arm64/control-run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "macos-arm64/features.log": "9a530aa97ddd97e1f4cb6b62eae18f630fc5ee2df31b2a1cade5f2c0b8f2c671",
+        "macos-arm64/probe-build.log": "5b3f2dbddb656378757f11eafa61508d465049f5075694d2739a84acf73ecfa5",
+        "macos-arm64/probe-run.log": "486b628286f7475937bd86e17b953ca3cba4714f9132fce44ad03409df8254fb",
+        "macos-arm64/retroarch-build.log": "abe8caaffcc0d94f26cf0cda137eb466f7987139772cacb08d2ba645d31e9e6e",
+        "macos-arm64/retroarch-configure.log": "c325d983f26142c54c8b71ef2fbf27f91e5b4744023d29f75f17dacf7444d4ce",
+        "macos-arm64/runtime-dependencies.log": "58b80fa084ff21f22b8e70c5ebb50dd782e96b6082273243d64326a9462bbc4a",
+        "macos-arm64/sdl-build.log": "8007f4ee3b0cb117f5b9555e458452be8b20b5b1d1cc78a9e449a74b648c1814",
+        "macos-arm64/sdl-configure.log": "83f5266617ec22f1308ff11535781f7bfd2f3e2c1126d2cf5f66c2cb0c17fc11",
+        "macos-arm64/sdl-install.log": "e2e5e0bd4a8b04f0e9b89003ef0594d722aaa1a23325dd53531114736f8d09fd"
+      },
+      "zip_sha256": "abe6e968441dfaf8393403d7c003a5af75f42e85330201fed263b5051f1ce2f3"
+    }
+  },
+  "input_logs": {
+    "linux-arm64": "3f7c5d23a211c5a6c81a024b4a5ea4709d9749418d752e9ca78bec2314635f6e",
+    "linux-x64": "a1b07a94394fc58063dabcc3d5c525e7f42899c537077c11f58091b4378d49d9",
+    "macos-arm64": "2120c0bebe55802afd8e372c7ef6d150b2d0cd7236539c7b6691c9c5450cc0d1",
+    "windows-x64": "128d4f23c213580090c0f2ef2b1488fcdc5876de4ac47b3fbc9a3d8c458815c7"
+  },
+  "limits": [
+    "Hosted macOS ARM64 timeout not reproduced or resolved locally",
+    "No native Linux or Windows execution on this macOS host",
+    "No new hosted run of these changes",
+    "No commit, push, tag, release or Flutter rebuild"
+  ],
+  "logs": [
+    ".tool-cache/ci-followup-2-*",
+    ".tool-cache/logs/macos-arm64/",
+    ".tool-cache/logs/sampler-check-*/"
+  ],
+  "native_fingerprints": {
+    "binary_sha256": "fc66d124bc8a3933d5ebf112a0f9bf4b9794f91602dacdfb970189b1483343ca",
+    "sdl_sha256": "8da52527edaedd4a59fe2371a0333320dcae9e075da2c300d5f4af7622463556"
+  },
+  "run": "https://github.com/Broomm/retroarch/actions/runs/40565107398",
+  "unchanged_artifacts": {
+    "broomm_macos": {
+      "bytes": 20429530,
+      "sha256": "10d1be1312a16fc083532811bf64d71f38e245e38c5d339ddaf72d8993763fbb"
+    },
+    "retroarch_macos_arm64": {
+      "bytes": 8119704,
+      "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+    }
+  },
+  "xtest_outputs": [
+    {
+      "drvPath": "/nix/store/icc05bmspaihyvjlkpv69dqfw2fv2xma-libXtst-1.2.4.drv",
+      "outputs": {
+        "out": "/nix/store/vl868md5gc199rcrfdc7cl4mi5kb9jq9-libXtst-1.2.4"
+      }
+    },
+    {
+      "drvPath": "/nix/store/af0cqbb2c9s0sxmr0hnh251kxc0jlsb0-libXtst-1.2.4.drv",
+      "outputs": {
+        "out": "/nix/store/6i7rbc5ssifxbqd3s4ymkbcszmag2b1h-libXtst-1.2.4"
+      }
+    }
+  ]
+}

@@ -56,6 +56,24 @@ jobs:
           devbox-version: '0.18.4'
           disable-nix-access-token: 'true'
       - run: devbox --config ci/lint run check
+      - name: Audit SDK outputs for all Unix architectures
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p .tool-cache/logs
+          sdk_status=0
+          nix --extra-experimental-features 'nix-command flakes' eval --json --impure \
+            --file tool/check_sdk.nix --apply 'f: f {}' \
+            > .tool-cache/logs/sdk-output-audit.json \
+            2> .tool-cache/logs/sdk-output-audit.log || sdk_status=$?
+          cat .tool-cache/logs/sdk-output-audit.log >&2
+          exit "$sdk_status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: retroarch-sdk-audit
+          path: .tool-cache/logs/sdk-output-audit.*
+          if-no-files-found: warn
+          retention-days: 14
 
   build:
     needs: version
@@ -100,14 +118,19 @@ jobs:
         if: runner.os == 'Windows'
         run: bash tool/run.sh windows-tools
       - name: Test packaging and release boundaries
+        id: boundaries
         run: bash tool/run.sh check
       - name: Build pinned SDL3 and RetroArch
+        id: runtime
+        # A regression failure still fails this job/publication, but should not
+        # hide independent compilation and native probe results.
+        if: ${{ !cancelled() && (steps.boundaries.outcome == 'success' || steps.boundaries.outcome == 'failure') }}
         run: bash tool/run.sh build --target "$BUILD_TARGET" --version "$RELEASE_VERSION"
       - name: Native SDL3 identity and input probe
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.runtime.outcome == 'success' }}
         run: bash tool/run.sh test-sdl --target "$BUILD_TARGET"
       - name: Native frontend and pause/quit probe
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.runtime.outcome == 'success' }}
         run: bash tool/run.sh test-frontend --target "$BUILD_TARGET"
       - name: Package checked runtime and licenses
         run: bash tool/run.sh package --target "$BUILD_TARGET"
@@ -123,6 +146,16 @@ jobs:
           name: retroarch-logs-${{ matrix.target }}
           path: .tool-cache/logs/
           if-no-files-found: warn
+          retention-days: 14
+      - name: Retain failed native runtime for diagnosis
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: ${{ failure() && steps.runtime.outcome == 'success' }}
+        with:
+          name: retroarch-failed-runtime-${{ matrix.target }}
+          path: |
+            build/${{ matrix.target }}/build.json
+            build/${{ matrix.target }}/bundle/
+          if-no-files-found: error
           retention-days: 14
 
   sources:

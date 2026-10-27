@@ -1,0 +1,259 @@
+{
+  "base_commit": "76d7b2cda179a8b2b314e62fbb434e7ca6dd05f1",
+  "checks": {
+    "diff": "git diff --check: passed",
+    "lint": "devbox --config ci/lint run check: actionlint and ShellCheck passed",
+    "logs": {
+      "ci-followup-5-check.log": "0945e0c4a1463f6b055b0c7f6f0c9cb6977dc023db66808f6080b0c4f1c94a4c",
+      "ci-followup-5-lint.log": "2de64efdf819e22c4ca03634bf797762b4e1cda421489c0340bd4fa92bc785c3"
+    },
+    "production_entry_point": "bash tool/run.sh check: 37 passed on macOS",
+    "source_hashes": {
+      "IMPLEMENTATION.md": "66cef9b50c45e9b60ea4f91b8201ea4ed886922da28e65cf6ab8d57c6ab03e2f",
+      "README.md": "239939615fafe5c30d65df268a6bdbce8402e2c9fff5d7a9ca3ffcb93d81340d",
+      "tests/test_ci.py": "4d9d6cfd463f5939584be32f32e7807ce4ae73502da64aa629d7dfa239fb5d24",
+      "tool/ci.py": "e27ccd18e74f0c7075a195aafb231a029bf1c15ccb7af61d3679d06fbc9304a3"
+    }
+  },
+  "corrections": {
+    "diagnostics": "Preserve upstream configure config.log on completion, failure or timeout when available, without masking original errors",
+    "linux": "Only missing host EGL is provisioned from the existing locked SDK into a private RPATH-stripped probe fixture; no OS install, packaged library or Wayland/EGL feature change",
+    "windows": "Explicit private CC/CXX/WINDRES/PKG_CONF_PATH .exe paths bypass qb's POSIX PATH/exact filename lookup; missing tools fail without host fallback"
+  },
+  "date": "2026-10-27",
+  "egl_binary_inspection": {
+    "arm64": {
+      "archive_hash_verified": true,
+      "glibc": [
+        "GLIBC_2.17",
+        "GLIBC_2.33",
+        "GLIBC_2.34",
+        "GLIBC_2.38"
+      ],
+      "machine": 183,
+      "nar_hash_verified": true,
+      "needed": [
+        "libm.so.6",
+        "libGLdispatch.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "rpath": [],
+      "runpath": [
+        "/nix/store/9adm4p8x2j45zy8m2hz14alzw6dyhsbx-libglvnd-1.7.0/lib:/nix/store/aaq36r4a49fbsh0mbwbjizv2jrh4zqzm-glibc-2.39-52/lib"
+      ],
+      "sha256": "175f10b99552a3dc0b32bdce8830db0a7e39c6e2fa641f69cd0a872117afa18e",
+      "soname": [
+        "libEGL.so.1"
+      ],
+      "store": "/nix/store/9adm4p8x2j45zy8m2hz14alzw6dyhsbx-libglvnd-1.7.0"
+    },
+    "x64": {
+      "archive_hash_verified": true,
+      "glibc": [
+        "GLIBC_2.14",
+        "GLIBC_2.2",
+        "GLIBC_2.3",
+        "GLIBC_2.33",
+        "GLIBC_2.34",
+        "GLIBC_2.38",
+        "GLIBC_2.4",
+        "GLIBC_2.7"
+      ],
+      "machine": 62,
+      "nar_hash_verified": true,
+      "needed": [
+        "libm.so.6",
+        "libGLdispatch.so.0",
+        "libc.so.6"
+      ],
+      "rpath": [],
+      "runpath": [
+        "/nix/store/6lzcb4zv3lysq4yjhmgi1dkc6fqrgphy-libglvnd-1.7.0/lib:/nix/store/pf5avvvl4ssd6kylcvg2g23hcjp71h19-glibc-2.39-52/lib"
+      ],
+      "sha256": "9db73c8d36d38ee3327e10f26886df65ea0083f7a462b037813a7bbad1fe8139",
+      "soname": [
+        "libEGL.so.1"
+      ],
+      "store": "/nix/store/6lzcb4zv3lysq4yjhmgi1dkc6fqrgphy-libglvnd-1.7.0"
+    }
+  },
+  "egl_sdk": {
+    "aarch64-linux": {
+      "out": "/nix/store/9adm4p8x2j45zy8m2hz14alzw6dyhsbx-libglvnd-1.7.0",
+      "version": "1.7.0"
+    },
+    "x86_64-linux": {
+      "out": "/nix/store/6lzcb4zv3lysq4yjhmgi1dkc6fqrgphy-libglvnd-1.7.0",
+      "version": "1.7.0"
+    }
+  },
+  "hosted_jobs_at_base": [
+    {
+      "conclusion": "success",
+      "name": "version",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "workflow-lint",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "sources",
+      "native_steps": []
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (windows-x64, windows-2025)",
+      "native_steps": [
+        {
+          "conclusion": "skipped",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (macos-x64, macos-15-intel)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (linux-arm64, ubuntu-24.04-arm)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "failure",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (linux-x64, ubuntu-24.04)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "failure",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (macos-arm64, macos-26)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "skipped",
+      "name": "publish",
+      "native_steps": []
+    }
+  ],
+  "limits": [
+    "Both macOS native CI jobs pass at the base revision; no new macOS binary was built locally",
+    "Windows-style compiler lookup was modeled on macOS; no native Windows execution on this host",
+    "Linux EGL outputs were inspected, not executed; corrected hosted frontend checks remain pending",
+    "Headless EGL fixture does not establish rendered graphics, physical audio/controllers, Broomm injection, Steam or gameplay acceptance",
+    "No Flutter change, new dependency, OS installation, project commit, push, tag or release"
+  ],
+  "log_artifacts": {
+    "linux-arm64": {
+      "artifact_id": 12767254520,
+      "bytes": 17186,
+      "input_log_sha256": "7e75f9963a35f1e77960aacbb2f2b0015e319c12f315a0f6e9853aaaba486c82",
+      "sha256": "cb8a9feea420f91dbd43e8f2b72aaae3120abe2e82fc633e9d96d7ed2ddcbdc6"
+    },
+    "linux-x64": {
+      "artifact_id": 12768285484,
+      "bytes": 17517,
+      "input_log_sha256": "562a748a3272fef6c608b8394d0b1d0a0190f378fe6719abf1fccacbd09a902b",
+      "sha256": "1b1162e80a257d43bc0878309ac0e49b82d267707f67139e1c433e6c99f7882e"
+    },
+    "windows-x64": {
+      "artifact_id": 12767622464,
+      "bytes": 6927,
+      "input_log_sha256": "68e9b5c1ac579bcd14fea8db22531ca01d8dca8d6beaea26deb3f5841d46ef95",
+      "sha256": "0d0c67a2ae32934c675beb9bf9f58a7ed8e4462f2ded226932a2599f98d30daa"
+    }
+  },
+  "run": "https://github.com/Broomm/retroarch/actions/runs/40575998429",
+  "unchanged_packages": {
+    "broomm_macos": {
+      "bytes": 20429530,
+      "file": "Broomm-macOS-session-recovery.zip",
+      "sha256": "10d1be1312a16fc083532811bf64d71f38e245e38c5d339ddaf72d8993763fbb"
+    },
+    "retroarch_macos_arm64": {
+      "bytes": 8119704,
+      "file": "RetroArch-1.22.2-broomm-0.1.0-local-macos-arm64.zip",
+      "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+    }
+  },
+  "upstream_compiler_model": {
+    "absolute-exe-tools": {
+      "output": "Checking for suitable working C compiler ... /Users/ptrschneider/Projects/broomm/.tool-cache/retroarch-release/followup-5/upstream-compiler-p1l7xg45/bin/gcc.exe works\nChecking for suitable working C++ compiler ... /Users/ptrschneider/Projects/broomm/.tool-cache/retroarch-release/followup-5/upstream-compiler-p1l7xg45/bin/g++.exe works\nChecking for windres ... /usr/bin/true\nChecking for pkg-config ... /usr/bin/true\n",
+      "returncode": 0
+    },
+    "bare-tools": {
+      "output": "Checking for suitable working C compiler ... gcc does not work\nError: Cannot proceed without a working C compiler.\n",
+      "returncode": 1
+    },
+    "scope": "Exact qb scripts and real Apple compiler; Windows-style lookup model, not native Windows execution",
+    "upstream_script_sha256": {
+      "config.comp.sh": "70a429b8f1ef06646bc7201c69bd53c23755e115dde607ab327867b90c7fb176",
+      "qb.comp.sh": "fd74817782f0bf205c02e893fdb77e1498ac854b1f7fec6ace33661a46a2d140",
+      "qb.init.sh": "9d13aef269c67ac31ff11eff6649a5ae863fe2d1d4bf71d0488e2980a8bd9c16"
+    }
+  }
+}

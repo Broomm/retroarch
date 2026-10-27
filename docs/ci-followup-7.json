@@ -1,0 +1,249 @@
+{
+  "artifacts": {
+    "windows-x64-logs.zip": {
+      "bytes": 1124654,
+      "id": 12769224892,
+      "sha256": "56c70a967771ead1f18d44b1d4f9c7136eb86185713f3bfb20c66103fb615dde"
+    },
+    "windows-x64-runtime.zip": {
+      "bytes": 11026406,
+      "id": 12771210427,
+      "sha256": "8c635da7427db409a37acf8150f1424b5d19c4c839b2752a04f8473a8e7cef7c"
+    }
+  },
+  "base_commit": "a1c3961f3636ef93672f6d3fa8366f464f1e61d7",
+  "cause": "Windows build metadata used backslashes while ZIP inventory keys used forward slashes; native receipt lookup raised KeyError after both native probes passed",
+  "checks": {
+    "diff": "git diff --check: passed",
+    "lint": "devbox --config ci/lint run check: actionlint and ShellCheck passed",
+    "logs": {
+      "ci-followup-7-check.log": "7670961b04c18a5282231f9fbc5dc0fef62fe79b7c7db259ac1f04043c74e578",
+      "ci-followup-7-lint.log": "2de64efdf819e22c4ca03634bf797762b4e1cda421489c0340bd4fa92bc785c3",
+      "ci-followup-7-package.log": "f31baa890bf7f4c2a2cfdae585e19f9105d0fe47eababa0556c833eeeb5d43af"
+    },
+    "real_macos_manifest": "Full updated archive/file/native receipt/checksum verification passed",
+    "regressions": "bash tool/run.sh check: 44 passed on macOS",
+    "source_hashes": {
+      "IMPLEMENTATION.md": "c346f92524348f1e0d8823a05e1694a37e710d701b6090820f046a41e2594e9a",
+      "README.md": "2597937fa9d60d3df8b00abfc018b4533f148e70842b8466aaad730e4257267c",
+      "tests/test_ci.py": "3d88e7686dbe23c96c08891e13473b45053de26cefd3c8d6053513ec3426e36a",
+      "tool/ci.py": "2965a7b438f2b71366d99938ac4015aabdd12f8b2bddc3651727302d4636419e"
+    }
+  },
+  "correction": "Serialize bundle-relative runtime references portably at the writer; validate syntax and inventory membership without normalizing unsafe references",
+  "date": "2026-10-27",
+  "hosted_jobs_at_base": [
+    {
+      "conclusion": "success",
+      "name": "sources",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "version",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "workflow-lint",
+      "native_steps": []
+    },
+    {
+      "conclusion": "success",
+      "name": "build (macos-x64, macos-15-intel)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "failure",
+      "name": "build (windows-x64, windows-2025)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "failure",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (macos-arm64, macos-26)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (linux-x64, ubuntu-24.04)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "name": "build (linux-arm64, ubuntu-24.04-arm)",
+      "native_steps": [
+        {
+          "conclusion": "success",
+          "name": "Native SDL3 identity and input probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Native frontend and pause/quit probe"
+        },
+        {
+          "conclusion": "success",
+          "name": "Package checked runtime and licenses"
+        }
+      ]
+    },
+    {
+      "conclusion": "skipped",
+      "name": "publish",
+      "native_steps": []
+    }
+  ],
+  "input_log_sha256": "1544b37c23a23e3bf81cf6a2f8de335eaf73cd23ef95091dc42fdcf79343f59e",
+  "inspection": {
+    "base_recipe_sha": "a1c3961f3636ef93672f6d3fa8366f464f1e61d7",
+    "corrected": {
+      "binary": "RetroArch/retroarch.exe",
+      "sdl": "RetroArch/SDL3.dll"
+    },
+    "existing_macos_manifest": {
+      "file": "RetroArch-1.22.2-broomm-0.1.0-local-macos-arm64.json",
+      "sha256": "0ea5d10b56c242eb2e1fc055c4778e802171b9062767759b69811ce6cc4db558",
+      "verified": true
+    },
+    "original": {
+      "binary": "RetroArch\\retroarch.exe",
+      "sdl": "RetroArch\\SDL3.dll"
+    },
+    "original_validation": "Unsafe archive path: 'RetroArch\\\\retroarch.exe'",
+    "referenced_files": {
+      "binary": {
+        "bytes": 25470917,
+        "file": "RetroArch/retroarch.exe",
+        "sha256": "a1f3ffb170d258f820e79272c17266d29569955fac52088fa2e96ff2cee20a62"
+      },
+      "sdl": {
+        "bytes": 5200440,
+        "file": "RetroArch/SDL3.dll",
+        "sha256": "9cdd96a1258e2b8f43b9220d51a8d31da249740bbbbb17be3a9fbdb9cf09b230"
+      }
+    },
+    "scope": "Exact Windows artifact metadata readback and local packaging regression; corrected native Windows package still awaits CI",
+    "target": "windows-x64",
+    "windows_execution_on_development_host": false,
+    "windows_native_protocol_at_base": [
+      {
+        "attempts": 2,
+        "client": [
+          "127.0.0.1",
+          58260
+        ],
+        "command": "GET_STATUS",
+        "expected": "PLAYING",
+        "port_unreachable": 1,
+        "replies": [
+          {
+            "peer": [
+              "127.0.0.1",
+              58261
+            ],
+            "reply": "GET_STATUS PLAYING Broomm CI,probe\n"
+          }
+        ],
+        "reply": "GET_STATUS PLAYING Broomm CI,probe",
+        "server": [
+          "127.0.0.1",
+          58261
+        ]
+      },
+      {
+        "attempts": 1,
+        "client": [
+          "127.0.0.1",
+          58260
+        ],
+        "command": "GET_STATUS",
+        "expected": "PAUSED",
+        "port_unreachable": 0,
+        "replies": [
+          {
+            "peer": [
+              "127.0.0.1",
+              58261
+            ],
+            "reply": "GET_STATUS PAUSED Broomm CI,probe\n"
+          }
+        ],
+        "reply": "GET_STATUS PAUSED Broomm CI,probe",
+        "server": [
+          "127.0.0.1",
+          58261
+        ]
+      }
+    ]
+  },
+  "limits": [
+    "All five targets pass native compilation and both probes at the base revision; Windows packaging fails afterward",
+    "Corrected Windows packaging and full publication need a fresh hosted run",
+    "Windows artifact was inspected, not executed on the macOS development host; no native receipt was reconstructed",
+    "No compiler/configure/source pin, workflow permission, timeout, dependency, upstream binary, Flutter file or Git publication change"
+  ],
+  "run": "https://github.com/Broomm/retroarch/actions/runs/40582896434",
+  "unchanged_packages": {
+    "broomm_macos": {
+      "bytes": 20429530,
+      "file": "Broomm-macOS-session-recovery.zip",
+      "sha256": "10d1be1312a16fc083532811bf64d71f38e245e38c5d339ddaf72d8993763fbb"
+    },
+    "retroarch_macos_arm64": {
+      "bytes": 8119704,
+      "file": "RetroArch-1.22.2-broomm-0.1.0-local-macos-arm64.zip",
+      "sha256": "15f9ced835ca428255952dac32fcc5d5e3d6664dabcaf64ed670f88382099f7c"
+    }
+  }
+}

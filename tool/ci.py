@@ -50,20 +50,41 @@ def digest(path):
 
 
 def run(args, *, cwd=None, env=None, log=None, timeout=1800):
-    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), " ".join(map(str, args)), flush=True)
+    args = list(map(str, args))
+    # CreateProcess does not use a supplied child PATH to locate argv[0].
+    # Resolve private Windows tools before spawning; their children inherit PATH.
+    if sys.platform == "win32" and env is not None:
+        args[0] = shutil.which(args[0], path=env.get("PATH", "")) or args[0]
+    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), " ".join(args), flush=True)
     if log:
         log = Path(log)
         log.parent.mkdir(parents=True, exist_ok=True)
         with log.open("w", encoding="utf-8") as output:
             output.write(f"UTC {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}\n")
             output.flush()
-            result = subprocess.run(list(map(str, args)), cwd=cwd, env=env, stdout=output,
-                                    stderr=subprocess.STDOUT, timeout=timeout, check=False)
+            try:
+                result = subprocess.run(args, cwd=cwd, env=env, stdout=output,
+                                        stderr=subprocess.STDOUT, timeout=timeout, check=False)
+            except subprocess.TimeoutExpired:
+                output.flush()
+                print_log_tail(log)
+                raise
         if result.returncode:
+            print_log_tail(log)
             raise RuntimeError(f"Command failed ({result.returncode}); complete log: {log}")
         return log.read_text(encoding="utf-8", errors="replace")
     return subprocess.check_output(list(map(str, args)), cwd=cwd, env=env,
                                    stderr=subprocess.STDOUT, timeout=timeout, text=True)
+
+
+def print_log_tail(log):
+    # Bound console output while retaining the complete original artifact.
+    with Path(log).open("rb") as stream:
+        stream.seek(max(0, os.fstat(stream.fileno()).st_size - 16384))
+        tail = stream.read().decode("utf-8", errors="replace")
+    tail = "\n".join(tail.splitlines()[-80:])
+    tail = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", tail)
+    print(f"Last diagnostic output from {log}:\n{tail}", file=sys.stderr, flush=True)
 
 
 def download(spec, directory=None):
@@ -204,16 +225,18 @@ def windows_tools():
     cmake_dir = tools / "cmake"
     if not cmake_dir.exists():
         extract(download(LOCK["windows_tools"]["cmake"]), cmake_dir, zipped=True)
-    paths = [tools / "w64devkit/bin", cmake_dir / "cmake-3.31.7-windows-x86_64/bin"]
+    paths = windows_tool_paths()
     for path in paths:
         if not path.is_dir():
             raise ValueError("Incomplete private Windows toolchain")
-    if output := os.getenv("GITHUB_PATH"):
-        with open(output, "a", encoding="utf-8") as stream:
-            stream.write("".join(str(p) + "\n" for p in paths))
     print("Private Windows toolchain ready; no system installation")
     for path in paths:
-        print(f"Shell PATH entry: {path}")
+        print(f"Build child PATH entry: {path}")
+
+
+def windows_tool_paths():
+    tools = CACHE / "windows-tools"
+    return [tools / "w64devkit/bin", tools / "cmake/cmake-3.31.7-windows-x86_64/bin"]
 
 
 def environment(target):
@@ -230,10 +253,53 @@ def environment(target):
     elif target.startswith("linux"):
         env["CC"], env["CXX"] = "gcc", "g++"
     else:
-        env["CC"], env["CXX"] = "gcc", "g++"
+        # Do not export these to GITHUB_PATH: w64devkit's bash.exe is BusyBox
+        # and cannot run Actions' Git Bash --noprofile/--norc command template.
+        env["PATH"] = os.pathsep.join(map(str, windows_tool_paths())) + os.pathsep + env.get("PATH", "")
+        # qb's exists() splits PATH on ':' and tests exact filenames: neither
+        # Windows' semicolon PATH nor implicit .exe lookup works there. Supply
+        # each required private tool explicitly, including the resource compiler.
+        for key, name in (("CC", "gcc.exe"), ("CXX", "g++.exe"),
+                          ("WINDRES", "windres.exe"), ("PKG_CONF_PATH", "pkg-config.exe")):
+            executable = windows_tool_paths()[0] / name
+            if not executable.is_file():
+                raise ValueError(f"Missing private Windows tool: {executable}; run windows-tools first")
+            env[key] = executable.as_posix()
         # Avoid invoking Visual Studio/Cygwin tools discovered on the runner.
         env["CMAKE_GENERATOR"] = "MinGW Makefiles"
     return env
+
+
+def configure_flags(target):
+    flags = list(CONFIGURE)
+    if target.startswith("macos"):
+        flags += ["--disable-metal"]
+    elif target.startswith("linux"):
+        # SDL3 loads the host PulseAudio client dynamically; RetroArch's direct
+        # backend otherwise makes libpulse mandatory even for --features.
+        flags += ["--disable-pulse"]
+    return flags
+
+
+def configure_frontend(source, flags, env, log):
+    failed = True
+    try:
+        result = run(["sh", "./configure", *flags], cwd=source, env=env,
+                     log=log / "retroarch-configure.log")
+        failed = False
+        return result
+    finally:
+        # Upstream writes most dependency/compiler diagnostics separately.
+        # Preserve those even when configure fails; logging cannot replace it.
+        try:
+            details = source / "config.log"
+            if details.is_file():
+                destination = log / "retroarch-configure-details.log"
+                shutil.copy2(details, destination)
+                if failed:
+                    print_log_tail(destination)
+        except OSError as error:
+            print(f"Could not retain configure details: {error}", file=sys.stderr)
 
 
 def build(target, version):
@@ -274,18 +340,18 @@ def build(target, version):
     for key in list(env):
         if key.startswith("NIX_PKG_CONFIG_WRAPPER_FLAGS_SET_"):
             env.pop(key)
-    env["PKG_CONF_PATH"] = shutil.which("pkg-config", path=env["PATH"]) or "pkg-config"
+    if not target.startswith("windows"):
+        env["PKG_CONF_PATH"] = shutil.which("pkg-config", path=env["PATH"]) or "pkg-config"
     cflags = run(["pkg-config", "--cflags", "sdl3"], env=env).strip()
     libs = run(["pkg-config", "--libs", "sdl3"], env=env).strip()
-    flags = list(CONFIGURE)
+    flags = configure_flags(target)
     if target.startswith("macos"):
-        flags += ["--disable-metal"]
         env["LDFLAGS"] = "-framework QuartzCore"
     elif target.startswith("linux"):
         env["LDFLAGS"] = "-static-libgcc -static-libstdc++"
     else:
         env["LDFLAGS"] = "-static-libgcc -static-libstdc++"
-    run(["sh", "./configure", *flags], cwd=source, env=env, log=log / "retroarch-configure.log")
+    configure_frontend(source, flags, env, log)
     config = (source / "config.h").read_text()
     for feature in REQUIRED:
         if not re.search(rf"^#define HAVE_{feature} 1$", config, re.M):
@@ -360,7 +426,7 @@ def build(target, version):
     record = {"schema_version": 1, "target": target, "version": version,
               "upstream_version": LOCK["upstream_version"], "sources": LOCK["sources"],
               "recipe_sha": os.getenv("GITHUB_SHA", "local"), "configure": flags,
-              "binary": str(binary.relative_to(bundle)), "sdl": str(library.relative_to(bundle)),
+              **runtime_paths(bundle, binary, library),
               "requirements": TARGETS[target], "toolchain": {c: run([c, "--version"], env=env).splitlines()[0] for c in ("cmake", "make", "pkg-config")},
               "compiler": run([env["CC"], "--version"], env=env).splitlines()[0]}
     write(stage / "build.json", record)
@@ -368,11 +434,30 @@ def build(target, version):
     print(f"Built {target}: {output}; logs: {log}")
 
 
+def runtime_paths(bundle, binary, library):
+    # JSON references and ZIP inventory keys must agree across producer hosts
+    # and the Linux publisher, independently of the native path separator.
+    paths = {"binary": binary.relative_to(bundle).as_posix(),
+             "sdl": library.relative_to(bundle).as_posix()}
+    validate_runtime_paths(paths)
+    return paths
+
+
+def validate_runtime_paths(record, files=None):
+    for key in ("binary", "sdl"):
+        value = record.get(key)
+        if not isinstance(value, str) or safe_name(value).as_posix() != value:
+            raise ValueError(f"Runtime {key} must name a portable bundle path")
+        if files is not None and value not in files:
+            raise ValueError(f"Runtime {key} is not present in the bundle inventory: {value}")
+
+
 def build_data(target):
     base = ROOT / "build" / target
     record = read(base / "build.json")
     if record["target"] != target:
         raise ValueError("Mismatched build identity")
+    validate_runtime_paths(record)
     return base, record
 
 
@@ -393,7 +478,54 @@ def test_sdl(target):
         args += ["-Wl,-rpath," + str(library.parent)]
     run(args, env=env, log=CACHE / f"logs/{target}/probe-build.log", timeout=120)
     run([output], env=env, log=CACHE / f"logs/{target}/probe-run.log", timeout=30)
-    write(base / "sdl-test.json", {"passed": True, "library_sha256": digest(library), "cases": ["SDL 3.4 ABI", "virtual gamepad discovery", "button route and neutral release"]})
+    write(base / "sdl-test.json", {"passed": True, "library_sha256": digest(library), "cases": ["SDL 3.4 ABI", "virtual gamepad discovery", "button route and neutral release", "SDL3 dummy audio stream"]})
+
+
+def validate_linux_dependencies(dynamic, loaded):
+    missing = re.findall(r"^\s*(\S+)\s+=>\s+not found\s*$", loaded, re.M)
+    if missing:
+        raise ValueError("Packaged ELF has unresolved runtime libraries: " + ", ".join(missing))
+    if "/nix/store/" in loaded:
+        raise ValueError("Packaged ELF resolves a build SDK runtime; see runtime-dependencies.log")
+    if re.search(r"\(NEEDED\).*\[libpulse[^\]]*\]", dynamic):
+        raise ValueError("Linux PulseAudio must use SDL3 dynamic loading, not a mandatory frontend dependency")
+
+
+def linux_test_environment(binary, private, env, log):
+    """Provision a headless runner's missing EGL loader for this probe only."""
+    loaded = run(["/usr/bin/ldd", binary], env=env)
+    (log / "runtime-dependencies-before-fixture.log").write_text(loaded)
+    missing = re.findall(r"^\s*(\S+)\s+=>\s+not found\s*$", loaded, re.M)
+    if not missing:
+        validate_linux_dependencies("", loaded)
+        return env
+    if missing != ["libEGL.so.1"]:
+        validate_linux_dependencies("", loaded)
+    # The approved locked SDK already supplies libglvnd. Avoid installing OS
+    # packages, disabling Wayland/EGL, or exposing the whole SDK at runtime.
+    sdk = run(["pkg-config", "--variable=libdir", "egl"], env=env).strip()
+    if not PurePosixPath(sdk).is_absolute() or not sdk.startswith("/nix/store/"):
+        raise ValueError("EGL test fixture must come from the locked Devbox SDK")
+    source = (Path(sdk) / "libEGL.so.1").resolve(strict=True)
+    directory = Path(tempfile.mkdtemp(prefix="egl-runtime-", dir=private))
+    fixture = directory / "libEGL.so.1"
+    shutil.copy2(source, fixture)
+    fixture.chmod(0o755)
+    run(["patchelf", "--remove-rpath", fixture], env=env)
+    child_env = dict(env, LD_LIBRARY_PATH=str(directory))
+    dynamic = run(["readelf", "-d", fixture], env=child_env)
+    dependencies = run(["/usr/bin/ldd", fixture], env=child_env)
+    (log / "egl-fixture-dependencies.log").write_text(dynamic + "\n" + dependencies)
+    if re.search(r"\((?:RUNPATH|RPATH)\)", dynamic):
+        raise ValueError("EGL test fixture retains a build SDK search path")
+    validate_linux_dependencies(dynamic, dependencies)
+    write(log / "runtime-fixture.json", {
+        "scope": "headless frontend probe only; not packaged",
+        "source": str(source), "source_sha256": digest(source),
+        "fixture": str(fixture), "fixture_sha256": digest(fixture),
+    })
+    print(f"Headless probe EGL loader: {fixture}; not part of the runtime package", flush=True)
+    return child_env
 
 
 def test_frontend(target):
@@ -409,9 +541,9 @@ def test_frontend(target):
     for key in ("HOME", "USERPROFILE", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME"):
         env[key] = str(private)
     env.update({"SDL_VIDEODRIVER": "dummy", "SDL_AUDIODRIVER": "dummy"})
-    features = run([binary, "--features"], cwd=private, env=env, log=CACHE / f"logs/{target}/features.log", timeout=30)
-    if not re.search(r"SDL3[^\n]*yes", features, re.I):
-        raise ValueError("Packaged frontend does not report SDL3 support")
+    (CACHE / f"logs/{target}").mkdir(parents=True, exist_ok=True)
+    if target.startswith("linux"):
+        env = linux_test_environment(binary, private, env, CACHE / f"logs/{target}")
     library = bundle / record["sdl"]
     dependency_logs = []
     for runtime in (binary, library):
@@ -437,8 +569,10 @@ def test_frontend(target):
         elif target.startswith("linux"):
             loader = run(["/usr/bin/ldd", runtime], env=env)
             dependency_logs.append(loader)
-            if "not found" in loader or "/nix/store/" in loader:
-                raise ValueError("Packaged ELF requires libraries outside the target system")
+            # Keep all loader diagnostics before attempting native startup.
+            (CACHE / f"logs/{target}/runtime-dependencies.log").parent.mkdir(parents=True, exist_ok=True)
+            (CACHE / f"logs/{target}/runtime-dependencies.log").write_text("\n".join(dependency_logs))
+            validate_linux_dependencies(dependencies, loader)
             expected = "X86-64" if target.endswith("x64") else "AArch64"
             if expected not in run(["readelf", "-h", runtime], env=env):
                 raise ValueError("Packaged ELF architecture differs from target")
@@ -455,46 +589,41 @@ def test_frontend(target):
     (CACHE / f"logs/{target}/runtime-dependencies.log").write_text("\n".join(dependency_logs))
     if target.startswith("macos"):
         run(["/usr/bin/codesign", "--verify", "--deep", "--strict", bundle / "RetroArch.app"])
+    features = run([binary, "--features"], cwd=private, env=env, log=CACHE / f"logs/{target}/features.log", timeout=30)
+    if not re.search(r"SDL3[^\n]*yes", features, re.I):
+        raise ValueError("Packaged frontend does not report SDL3 support")
     # A tiny original no-ROM core verifies the actual UDP control path.
     source = base / "sources/retroarch" / LOCK["sources"]["retroarch"]["directory"]
     core = private / ("probe.dll" if target.startswith("windows") else "probe.dylib" if target.startswith("macos") else "probe.so")
     compiler = [env["CC"], "-shared", "-fPIC", f"-I{source / 'libretro-common/include'}", ROOT / "tests/control_core.c", "-o", core]
     run(compiler, env=env, log=CACHE / f"logs/{target}/control-core-build.log", timeout=120)
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as reservation:
-        reservation.bind(("127.0.0.1", 0))
-        port = reservation.getsockname()[1]
     config = private / "retroarch.cfg"
-    config.write_text(test_configuration(private, port))
     log = CACHE / f"logs/{target}/control-run.log"
     protocol = []
     with log.open("w") as output, socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client:
         client.settimeout(.25)
+        port = prepare_control_client(client)
+        config.write_text(test_configuration(private, port))
         # GET_STATUS describes contentless cores differently. Supply original
         # inert test bytes so pause readback follows the same path as a game.
         content = private / "probe.bin"
         content.write_bytes(b"Broomm native command probe\n")
-        process = subprocess.Popen([str(binary), "--verbose", "--config", str(config), "-L", str(core), str(content)], cwd=private, env=env, stdout=output, stderr=subprocess.STDOUT)
-        def query(command, expected):
-            deadline = time.monotonic() + 20
-            while time.monotonic() < deadline:
-                if process.poll() is not None:
-                    raise ValueError(f"Frontend exited before command acknowledgment; see {log}")
-                client.sendto(command.encode(), ("127.0.0.1", port))
-                try:
-                    reply = client.recv(4096).decode()
-                    if expected in reply:
-                        protocol.append({"command": command, "reply": reply.strip()})
-                        return reply
-                except socket.timeout:
-                    pass
-            raise ValueError(f"Native command timed out: {command}; see {log}")
+        # The macOS frontend prints to buffered stdout. Its explicit log file
+        # flushes each line, retaining the last phase if the process stalls.
+        process = subprocess.Popen([str(binary), "--verbose", "--log-file", str(log.parent / "frontend.log"),
+                                    "--config", str(config), "-L", str(core), str(content)],
+                                   cwd=private, env=env, stdout=output, stderr=subprocess.STDOUT)
         try:
-            query("GET_STATUS", "PLAYING")
+            query_control(client, process, port, "GET_STATUS", "PLAYING", protocol)
             client.sendto(b"PAUSE_TOGGLE", ("127.0.0.1", port))
-            query("GET_STATUS", "PAUSED")
+            query_control(client, process, port, "GET_STATUS", "PAUSED", protocol)
             client.sendto(b"QUIT", ("127.0.0.1", port))
             if process.wait(timeout=20) != 0:
                 raise ValueError("Frontend failed normal command shutdown")
+        except Exception:
+            output.flush()
+            frontend_diagnostics(process, log.parent, target, protocol)
+            raise
         finally:
             if process.poll() is None:
                 process.terminate()
@@ -508,6 +637,71 @@ def test_frontend(target):
             raise ValueError("Native probe escaped its private configuration; see control-run.log")
     write(CACHE / f"logs/{target}/control-protocol.json", protocol)
     write(base / "frontend-test.json", {"passed": True, "binary_sha256": digest(binary), "cases": ["relocated runtime dependencies", "SDL3 feature readback", "original synthetic core/content", "UDP playing/pause acknowledgment", "normal QUIT", "explicit private writable paths"]})
+
+
+def prepare_control_client(client):
+    # Bind before reserving the server's port. Both endpoints stay on loopback,
+    # with distinct ports even if the child has not initialized its socket yet.
+    client.bind(("127.0.0.1", 0))
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as reservation:
+        reservation.bind(("127.0.0.1", 0))
+        return reservation.getsockname()[1]
+
+
+def query_control(client, process, port, command, expected, protocol):
+    deadline = time.monotonic() + 20
+    event = {"command": command, "expected": expected, "client": client.getsockname(),
+             "server": ["127.0.0.1", port], "attempts": 0, "replies": [], "port_unreachable": 0}
+    protocol.append(event)
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            raise ValueError("Frontend exited before command acknowledgment; see control-protocol.json and frontend.log")
+        event["attempts"] += 1
+        try:
+            client.sendto(command.encode(), ("127.0.0.1", port))
+            data, peer = client.recvfrom(4096)
+            reply = data.decode("utf-8", errors="replace")
+            if len(event["replies"]) < 80:
+                event["replies"].append({"peer": peer, "reply": reply[:512]})
+            if peer == ("127.0.0.1", port) and reply.startswith(command + " ") and expected in reply:
+                event["reply"] = reply.strip()
+                return reply
+        except socket.timeout:
+            pass
+        except ConnectionResetError as error:
+            # Winsock reports ICMP Port Unreachable for a UDP packet sent
+            # before the child binds its command socket. Keep waiting for a
+            # real acknowledgment, with the same deadline and child checks.
+            if sys.platform != "win32" or getattr(error, "winerror", error.errno) != 10054:
+                raise
+            event["port_unreachable"] += 1
+            # An immediate ICMP error must not turn the startup wait into a
+            # busy retransmit loop. Match the existing receive poll interval.
+            time.sleep(.25)
+    raise ValueError(f"Native command timed out: {command}; {len(event['replies'])} replies recorded in control-protocol.json")
+
+
+def frontend_diagnostics(process, directory, target, protocol=None):
+    """Read only the probe's own child, before its supervisor terminates it."""
+    try:
+        if protocol is not None:
+            write(directory / "control-protocol.json", protocol)
+        result = process.poll()
+        write(directory / "failed-process.json", {"pid": process.pid, "returncode": result, "target": target})
+        for filename in ("frontend.log", "control-run.log"):
+            if (directory / filename).is_file():
+                print_log_tail(directory / filename)
+        if result is None and target.startswith("macos"):
+            try:
+                run(["/usr/sbin/lsof", "-nP", "-a", "-p", str(process.pid), "-iUDP"],
+                    log=directory / "frontend-sockets.log", timeout=5)
+            except (OSError, RuntimeError, subprocess.SubprocessError) as error:
+                print(f"Could not inspect frontend UDP sockets: {error}", file=sys.stderr)
+            run(["/usr/bin/sample", str(process.pid), "1", "1", "-file", directory / "frontend-sample.txt"],
+                log=directory / "frontend-sample.log", timeout=10)
+    except (OSError, RuntimeError, subprocess.SubprocessError) as error:
+        # Diagnostic failure cannot replace the original native test failure.
+        print(f"Could not complete frontend diagnostics: {error}", file=sys.stderr)
 
 
 def test_configuration(private, port):
@@ -579,6 +773,7 @@ def verify_manifest(path):
             or manifest["sources"] != LOCK["sources"] or manifest["requirements"] != TARGETS[target]
             or manifest["upstream_version"] != LOCK["upstream_version"]):
         raise ValueError("Release identity/source pins differ")
+    validate_runtime_paths(manifest, manifest["files"])
     archive_info = manifest["archive"]
     name = f"RetroArch-{LOCK['upstream_version']}-broomm-{manifest['version']}-{target}.zip"
     if archive_info["file"] != name:
